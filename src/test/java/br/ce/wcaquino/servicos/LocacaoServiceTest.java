@@ -1,8 +1,8 @@
 package br.ce.wcaquino.servicos;
 
-
-import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
-import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
+import static br.ce.wcaquino.matchers.MatchersProprios.caiNumaSegunda;
+import static br.ce.wcaquino.matchers.MatchersProprios.eHoje;
+import static br.ce.wcaquino.matchers.MatchersProprios.eHojeComDiferencaDias;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -12,7 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,8 +55,8 @@ public class LocacaoServiceTest {
 
 		//verificacao
 		error.checkThat(locacao.getValor(), is(equalTo(8.0)));
-		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-		error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
+		error.checkThat(locacao.getDataLocacao(), eHoje());
+		error.checkThat(locacao.getDataRetorno(), eHojeComDiferencaDias(1));
 	}
 	
 	// forma elegante
@@ -109,10 +108,6 @@ public class LocacaoServiceTest {
 		Locacao retorno = service.alugarFilme(usuario, filmes);
 		
 		//verificacao
-		boolean isMonday = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-		
-		Assert.assertTrue(isMonday);
+		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
 	}
-	
-		
 }
