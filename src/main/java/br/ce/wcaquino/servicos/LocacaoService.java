@@ -8,8 +8,8 @@ import java.util.List;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
-import exceptions.FilmeSemEstoqueException;
-import exceptions.LocadoraException;
+import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
+import br.ce.wcaquino.exceptions.LocadoraException;
 
 public class LocacaoService {
 	

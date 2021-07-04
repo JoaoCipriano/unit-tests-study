@@ -1,11 +1,7 @@
-package br.ce.wcaquino.servicos;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import br.ce.wcaquino.entidades.Usuario;
-
-
 
 public class AssertTest {
 	
