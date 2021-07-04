@@ -3,12 +3,13 @@ package br.ce.wcaquino.servicos;
 
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
-import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,13 +42,14 @@ public class LocacaoServiceTest {
 	public void testeLocacao() throws Exception {
 		//cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("300", 2, 5.0);
+		List<Filme> filmes = List.of(new Filme("300", 2, 5.0), new Filme("Click", 2, 3.0));
+		
 		
 		//acao
-		Locacao locacao = service.alugarFilme(usuario, filme);
+		Locacao locacao = service.alugarFilme(usuario, filmes);
 
 		//verificacao
-		error.checkThat(locacao.getValor(), is(equalTo(5.0)));
+		error.checkThat(locacao.getValor(), is(equalTo(8.0)));
 		error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
 		error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
 	}
@@ -57,20 +59,20 @@ public class LocacaoServiceTest {
 	public void testLocacaoFilmeSemEstoque() throws Exception {
 		//cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("300", 0, 5.0);
+		List<Filme> filmes = List.of(new Filme("300", 2, 5.0), new Filme("Click", 0, 3.0));
 		
 		//acao
-		service.alugarFilme(usuario, filme);
+		service.alugarFilme(usuario, filmes);
 	}
 	
 	@Test
 	public void testLocacaoUsuarioVazio() throws FilmeSemEstoqueException {
 		//cenario
-		Filme filme = new Filme("300", 2, 5.0);
+		List<Filme> filmes = List.of(new Filme("300", 2, 5.0), new Filme("Click", 1, 3.0));
 		
 		//acao
 		try {
-			service.alugarFilme(null, filme);
+			service.alugarFilme(null, filmes);
 			fail();
 		} catch (LocadoraException e) {
 			assertThat(e.getMessage(), is("Usuario vazio"));
