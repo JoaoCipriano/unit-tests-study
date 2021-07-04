@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -19,6 +20,7 @@ import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import exceptions.FilmeSemEstoqueException;
+import exceptions.LocadoraException;
 
 public class LocacaoServiceTest {
 	
@@ -56,35 +58,32 @@ public class LocacaoServiceTest {
 		service.alugarFilme(usuario, filme);
 	}
 	
-	// forma robusta
 	@Test
-	public void testLocacaoFilmeSemEstoque_2() {
+	public void testLocacaoUsuarioVazio() throws FilmeSemEstoqueException {
 		//cenario
 		LocacaoService service = new LocacaoService();
-		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("300", 0, 5.0);
+		Filme filme = new Filme("300", 2, 5.0);
 		
 		//acao
 		try {
-			service.alugarFilme(usuario, filme);
-			fail("Deveria ter lancado uma excecao");
-		} catch (Exception e) {
-			assertThat(e.getMessage(), is("Filme sem estoque"));
+			service.alugarFilme(null, filme);
+			fail();
+		} catch (LocadoraException e) {
+			assertThat(e.getMessage(), is("Usuario vazio"));
 		}
 	}
 	
-	// forma nova***
 	@Test
-	public void testLocacaoFilmeSemEstoque_3() throws Exception {
+	public void testLocacaoFilmeVazio() throws LocadoraException, FilmeSemEstoqueException {
 		//cenario
 		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("300", 0, 5.0);
 		
-		exception.expect(Exception.class);
-		exception.expectMessage("Filme sem estoque");
+		exception.expect(LocadoraException.class);
+		exception.expectMessage("Filme vazio");
 		
 		//acao
-		service.alugarFilme(usuario, filme);
+		service.alugarFilme(usuario, null);
 	}
+	
 }
