@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import br.ce.wcaquino.daos.LocacaoDAO;
+import br.ce.wcaquino.daos.LocacaoDAOFake;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
@@ -43,6 +45,8 @@ public class LocacaoServiceTest {
 	@Before
 	public void setUp() {
 		service = new LocacaoService();
+		LocacaoDAO dao = new LocacaoDAOFake();
+		service.setLocacaoDAO(dao);
 	}
 	
 	@Test
@@ -63,12 +67,11 @@ public class LocacaoServiceTest {
 		error.checkThat(locacao.getDataRetorno(), eHojeComDiferencaDias(1));
 	}
 	
-	// forma elegante
 	@Test(expected=FilmeSemEstoqueException.class)
 	public void naoDeveAlugarFilmeSemEstoque() throws Exception {
 		//cenario
 		Usuario usuario = umUsuario().agora();
-		List<Filme> filmes = List.of(umFilme().semEstoque().agora());
+		List<Filme> filmes = List.of(umFilmeSemEstoque().agora());
 		
 		//acao
 		service.alugarFilme(usuario, filmes);
@@ -77,7 +80,7 @@ public class LocacaoServiceTest {
 	@Test
 	public void naoDeveAlugarFilmeSemUsuario() throws FilmeSemEstoqueException {
 		//cenario
-		List<Filme> filmes = List.of(umFilmeSemEstoque().agora());
+		List<Filme> filmes = List.of(umFilme().agora());
 		
 		//acao
 		try {

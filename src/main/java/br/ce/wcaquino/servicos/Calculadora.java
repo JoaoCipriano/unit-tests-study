@@ -17,4 +17,8 @@ public class Calculadora {
 			throw new NaoPodeDividirPorZeroException();
 		return a/b;
 	}
+	
+	public int dividir(String a, String b) {
+		return Integer.valueOf(a) / Integer.valueOf(b);
+	}
 }
