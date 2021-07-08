@@ -4,6 +4,9 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.utils.DataUtils;
 
 import java.util.Arrays;
+
+import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
+
 import java.lang.Double;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +54,12 @@ public class LocacaoBuilder {
 
 	public LocacaoBuilder comDataRetorno(Date param) {
 		elemento.setDataRetorno(param);
+		return this;
+	}
+	
+	public LocacaoBuilder atrasada() {
+		elemento.setDataLocacao(obterDataComDiferencaDias(-4));
+		elemento.setDataRetorno(obterDataComDiferencaDias(-2));
 		return this;
 	}
 
