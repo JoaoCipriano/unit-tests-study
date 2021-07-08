@@ -3,6 +3,8 @@ package br.ce.wcaquino.servicos;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import org.junit.Assert;
+
 public class CalculadoraMockTest {
 	
 	@Test
@@ -10,6 +12,6 @@ public class CalculadoraMockTest {
 		Calculadora calc = Mockito.mock(Calculadora.class);
 		Mockito.when(calc.somar(Mockito.eq(1), Mockito.anyInt())).thenReturn(5);
 		
-		System.out.println(calc.somar(1, 8));
+		Assert.assertEquals(5, calc.somar(1, 8));
 	}
 }
