@@ -3,6 +3,8 @@ package br.ce.wcaquino.matchers;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hamcrest.Description;
@@ -18,7 +20,9 @@ public class DataDiferencaDiasMatcher extends TypeSafeMatcher<Date> {
 	
 	@Override
 	public void describeTo(Description description) {
-		description.appendText(qtdDias + " dias de diferença");
+		Date dataEsperada = obterDataComDiferencaDias(qtdDias);
+		DateFormat format = new SimpleDateFormat("dd/MM/YYYY");
+		description.appendText(format.format(dataEsperada));
 	}
 
 	@Override
